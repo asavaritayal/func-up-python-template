@@ -11,7 +11,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     Parameters
     ----------
     req : azure.functions.HttpRequest
-        HTTP request object associated with the HTTP trigger. 
+        HTTP request object associated with the HTTP trigger.
         See ./function.json for configuration properties.
 
     Returns
