@@ -1,16 +1,18 @@
 import logging
 
 import azure.functions as func
-
+import uuid
+import json
  
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """ 
-    HTTP triggered function looks for a `name` parameter in the query 
-    string or body of the request and returns a "Hello <name>!" message.
-   
+    HTTP triggered function reads a `name` parameter in the query 
+    string or body of the request and uses it to build a JSON document
+    returned to the client, with content type - application/json.
+    
     Parameters
     ----------
-    req : azure.functions.HttpRequest
+    req: azure.functions.HttpRequest
         HTTP request object associated with the HTTP trigger.
         See ./function.json for configuration properties.
 
@@ -33,7 +35,16 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             name = req_body.get('name')
 
     if name:
-        return func.HttpResponse(f"Hello {name}!")
+        id = uuid.uuid4()
+        res = {
+            "id":f"{id}",
+            "name":f"{name}"
+        }
+        return func.HttpResponse(
+            json.dumps(res),
+            status_code=200,
+            headers={"Content-Type": "application/json"}
+        )
     else:
         return func.HttpResponse(
              "Please pass a name on the query string or in the request body",
